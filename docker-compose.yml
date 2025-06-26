@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  service1:
+    build: ./service_1
+    container_name: service1
+    expose:
+      - "8001"
+    networks:
+      - app-network
+
+  service2:
+    build: ./service_2
+    container_name: service2
+    expose:
+      - "8002"
+    networks:
+      - app-network
+
+  nginx:
+    build: ./nginx
+    container_name: nginx-proxy
+    ports:
+      - "8080:80"
+    depends_on:
+      - service1
+      - service2
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
